@@ -4,26 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Array de Palabras</title>
-    <link href="style.css" rel="stylesheet">
-    <link href="output.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <link rel="icon" href="favicon.png" type="image/png">
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet"/>
 </head>
-<body class="bg-blue-400">
-<section class="flex w-full flex-col items-center justify-items-center p-3">
-    <h1 class="text-3xl text-black">Expresión Express</h1>
+<body class="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 font-sans min-h-screen flex flex-col items-center justify-center text-white">
 
-    <!--CARD-->
-    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <h2 id="word-display">Palabra</h2>
+<!-- Contenedor principal -->
+<section class="dark flex w-full flex-col items-center justify-center py-12 px-4">
+
+    <!-- Título principal -->
+    <h1 class="text-6xl font-bold text-center tracking-tight drop-shadow-lg">Expresión Express</h1>
+
+    <!-- Card que contiene el contenido principal -->
+    <div class="w-full max-w-md bg-white text-gray-900 p-8 mt-8 rounded-3xl shadow-xl flex flex-col items-center gap-6">
+
+        <!-- Palabra que se destaca -->
+        <h2 class="text-5xl font-extrabold tracking-wide text-indigo-600" id="word-display">Palabra</h2>
+
+        <!-- Botón para cambiar la palabra -->
         <button type="button" onclick="nextWord(); displayWord()"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                class="px-6 py-3 bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none rounded-full transition-all duration-100 transform hover:scale-105">
             Siguiente
         </button>
     </div>
+
 </section>
+
+<!-- Cronómetro -->
+<section class="flex w-full flex-col items-center justify-center py-12 px-4">
+
+    <h2 id="seconds" class="text-4xl font-bold text-center tracking-tight">00</h2>
+
+    <div class="flex flex-col items-center mt-6">
+        <!-- Botones -->
+        <div class="flex items-center justify-center gap-6">
+            <button id="start" onclick="resume()"
+                    class="px-6 py-3 bg-black text-white hover:bg-gray-900 focus:outline-none rounded-full transition-all duration-100 transform hover:scale-105">
+                Iniciar
+            </button>
+            <button id="pause" onclick="pause()"
+                    class="px-6 py-3 bg-black text-white hover:bg-gray-900 focus:outline-none rounded-full transition-all duration-100 transform hover:scale-105">
+                Pausar
+            </button>
+            <button id="reset" onclick="resetClock()"
+                    class="px-6 py-3 bg-black text-white hover:bg-gray-900 focus:outline-none rounded-full transition-all duration-100 transform hover:scale-105">
+                Reiniciar
+            </button>
+        </div>
+    </div>
+</section>
+
+<div id="alert-container" class="hidden fixed top-0 left-0 w-full flex items-center justify-center p-4">
+    <div class="bg-red-500 text-white font-bold rounded-lg border shadow-lg p-4">
+        Ya no hay más palabras.
+    </div>
+</div>
+
+<!-- Scripts -->
 <script src="index.js"></script>
-<script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
 </body>
 </html>

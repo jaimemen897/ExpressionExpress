@@ -4,7 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "build:css": "tailwindcss build src/style.css -o src/output.css",
     "http": "cd src && http-server",
+    "live": "cd src && live-server",
     "start": "node dist/index.js",
     "build": "tsc"
   },
