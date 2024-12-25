@@ -1,7 +1,8 @@
 let words = ['PARCHIS', 'CLUEDO', 'LANGOSTA', 'DOMINICAL', 'ACERO', 'PERFUME', 'MINUTO', 'CANARIAS', 'PASTA ITALIANA', 'ESTACIÓN', 'VIETNAM', 'BARBERO', 'AJEDREZ', 'COMIDA RÁPIDA', 'HELADO', 'CARA', 'FISCAL', 'CARDENAL', 'TROMPETA', 'SOLTERONA', 'DEBER', 'LOS ANGELES', 'PUENTE LEVADIZO', 'OREJERAS', 'PEREGRINO', 'TOCAR', 'MOZART', 'DIADEMA', 'SODA', 'PATO DONALD', 'BUCEAR', 'AIRE', 'PARRILLA', 'LEOPARDO', 'FUERA DE LÍMITE', 'SONAJERO', 'ESCLAVO', 'EMPUJAR', 'REMO', 'SANTO', 'FANTASMA', 'DEBATE', 'SONROJARSE', 'LOBO DE MAR', 'PROPAGANDA', 'LUCES DE NEÓN', 'RAYOS X', 'POSTER', 'SEVILLANAS', 'BATMAN', 'CAFE', 'ATAÚD', 'INVENTOR', 'ESTÚPIDO', 'BALLENA', 'ESTÓMAGO', 'ALGODÓN AZÚCAR', 'VIERNES', 'MALABARISTA', 'BOLA NAFTALINA', 'PLEGAR', 'ALTO'];
+const time = 10;
 
 let currentIndex = Math.floor(Math.random() * words.length);
-let currentTime = 90;
+let currentTime = time;
 let interval = setInterval(() => {
     nextTime();
     displayClock();
@@ -10,12 +11,10 @@ let isIntervalRunning = false;
 
 function displayWord() {
     let wordDisplay = document.getElementById("word-display");
-    let alertContainer = document.getElementById("alert-container");
 
     if (words.length === 0) {
-        if (alertContainer) {
-            alertContainer.classList.remove("hidden");
-        }
+        showAlert("Se han acabado las palabras");
+        resetClock();
         return;
     }
 
@@ -25,10 +24,19 @@ function displayWord() {
     }
 }
 
+function showAlert(message: string) {
+    let alertContainer = document.getElementById("alert-container");
+    let alertMessage = document.getElementById("alert-message");
+
+    if (alertContainer && alertMessage) {
+        alertMessage.innerText = message;
+        alertContainer.classList.remove("hidden");
+    }
+}
+
 function displayClock(){
     let seconds = document.getElementById("seconds");
     if (seconds){
-        console.log(currentTime);
         seconds.innerText = currentTime.toString() + "s";
     }
 }
@@ -44,12 +52,49 @@ function nextWord() {
     }
 }
 
+function playSoundBasedOnTime() {
+    let beepSound = document.getElementById("beep-sound") as HTMLAudioElement;
+    let beepSound2 = document.getElementById("beep-sound2") as HTMLAudioElement;
+    let beepSound3 = document.getElementById("beep-sound3") as HTMLAudioElement;
+    let beepSound4 = document.getElementById("beep-sound") as HTMLAudioElement;
+    let beepSound5 = document.getElementById("beep-sound") as HTMLAudioElement;
+    let beepSound6 = document.getElementById("beep-sound") as HTMLAudioElement;
+
+    if (currentTime > 20) {
+        if (currentTime % 5 === 0 && beepSound) {
+            beepSound.play();
+        }
+    } else if (currentTime > 10) {
+        if (currentTime % 2 === 0 && beepSound) {
+            beepSound.play();
+        }
+    } else if (currentTime > 5) {
+        if (currentTime % 1 === 0 && beepSound) {
+            beepSound.play();
+        }
+    } else if (currentTime == 0){
+        if (beepSound3) {
+            console.log("beepSound3");
+            beepSound3.play();
+        }
+    } else {
+        if (beepSound && beepSound2) {
+            beepSound.play();
+            beepSound2.play();
+            setTimeout(() => beepSound2.play(), 143);
+        }
+    }
+}
+
 function nextTime() {
+    playSoundBasedOnTime();
+
     if (currentTime > 0) {
         return currentTime--;
     } else {
-        currentTime = 90;
-        return currentTime;
+        showAlert("Se ha acabado el tiempo");
+        pause();
+        return time;
     }
 }
 
@@ -73,9 +118,10 @@ function resume() {
 }
 
 function resetClock() {
-    currentTime = 90;
+    currentTime = time;
     pause();
     displayClock();
+    return currentTime;
 }
 
 function updateButtonStyles() {
