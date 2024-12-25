@@ -5,16 +5,3 @@
 * {
     font-family: 'Inter var', sans-serif;
 }
-
-.bg-blink {
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    0%, 100% {
-        background-color: #e3342f; /* bg-red-600 */
-    }
-    50% {
-        background-color: #4c51bf; /* bg-indigo-500 */
-    }
-}
