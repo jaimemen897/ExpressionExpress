@@ -1,10 +1,16 @@
 var words = ['PARCHIS', 'CLUEDO', 'LANGOSTA', 'DOMINICAL', 'ACERO', 'PERFUME', 'MINUTO', 'CANARIAS', 'PASTA ITALIANA', 'ESTACIÓN', 'VIETNAM', 'BARBERO', 'AJEDREZ', 'COMIDA RÁPIDA', 'HELADO', 'CARA', 'FISCAL', 'CARDENAL', 'TROMPETA', 'SOLTERONA', 'DEBER', 'LOS ANGELES', 'PUENTE LEVADIZO', 'OREJERAS', 'PEREGRINO', 'TOCAR', 'MOZART', 'DIADEMA', 'SODA', 'PATO DONALD', 'BUCEAR', 'AIRE', 'PARRILLA', 'LEOPARDO', 'FUERA DE LÍMITE', 'SONAJERO', 'ESCLAVO', 'EMPUJAR', 'REMO', 'SANTO', 'FANTASMA', 'DEBATE', 'SONROJARSE', 'LOBO DE MAR', 'PROPAGANDA', 'LUCES DE NEÓN', 'RAYOS X', 'POSTER', 'SEVILLANAS', 'BATMAN', 'CAFE', 'ATAÚD', 'INVENTOR', 'ESTÚPIDO', 'BALLENA', 'ESTÓMAGO', 'ALGODÓN AZÚCAR', 'VIERNES', 'MALABARISTA', 'BOLA NAFTALINA', 'PLEGAR', 'ALTO'];
-var time = 10;
+//const time = Math.floor(Math.random() * (120 - 60) + 60);
+var time = 20;
 var currentIndex = Math.floor(Math.random() * words.length);
 var currentTime = time;
 var interval = setInterval(function () {
     nextTime();
     displayClock();
+}, 1000);
+var intervalSound = setInterval(function () {
+    if (isIntervalRunning) {
+        playSoundBasedOnTime();
+    }
 }, 1000);
 var isIntervalRunning = false;
 function displayWord() {
@@ -48,20 +54,18 @@ function playSoundBasedOnTime() {
     var beepSound = document.getElementById("beep-sound");
     var beepSound2 = document.getElementById("beep-sound2");
     var beepSound3 = document.getElementById("beep-sound3");
-    var beepSound4 = document.getElementById("beep-sound");
-    var beepSound5 = document.getElementById("beep-sound");
-    var beepSound6 = document.getElementById("beep-sound");
-    if (currentTime > 20) {
+    var body = document.getElementById("body");
+    if (currentTime > 25) {
         if (currentTime % 5 === 0 && beepSound) {
             beepSound.play();
         }
     }
-    else if (currentTime > 10) {
+    else if (currentTime > 20) {
         if (currentTime % 2 === 0 && beepSound) {
             beepSound.play();
         }
     }
-    else if (currentTime > 5) {
+    else if (currentTime > 15) {
         if (currentTime % 1 === 0 && beepSound) {
             beepSound.play();
         }
@@ -70,18 +74,30 @@ function playSoundBasedOnTime() {
         if (beepSound3) {
             console.log("beepSound3");
             beepSound3.play();
+            /*clear interval*/
+            clearInterval(intervalSound);
         }
     }
     else {
+        clearInterval(intervalSound);
         if (beepSound && beepSound2) {
             beepSound.play();
             beepSound2.play();
-            setTimeout(function () { return beepSound2.play(); }, 143);
         }
+        if (body) {
+            body.classList.remove("bg-blue-500");
+            body.classList.add("bg-red-500");
+            setTimeout(function () {
+                body.classList.remove("bg-red-500");
+                body.classList.add("bg-blue-500");
+            }, 300);
+        }
+        intervalSound = setInterval(function () {
+            playSoundBasedOnTime();
+        }, 500);
     }
 }
 function nextTime() {
-    playSoundBasedOnTime();
     if (currentTime > 0) {
         return currentTime--;
     }
@@ -112,6 +128,7 @@ function resetClock() {
     currentTime = time;
     pause();
     displayClock();
+    removeAlert();
     return currentTime;
 }
 function updateButtonStyles() {
@@ -136,6 +153,12 @@ function updateButtonStyles() {
             pauseButton.classList.remove("bg-black");
             pauseButton.classList.add("bg-gray-800");
         }
+    }
+}
+function removeAlert() {
+    var alertContainer = document.getElementById("alert-container");
+    if (alertContainer) {
+        alertContainer.classList.add("hidden");
     }
 }
 displayWord();

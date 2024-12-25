@@ -1,11 +1,19 @@
 let words = ['PARCHIS', 'CLUEDO', 'LANGOSTA', 'DOMINICAL', 'ACERO', 'PERFUME', 'MINUTO', 'CANARIAS', 'PASTA ITALIANA', 'ESTACIÓN', 'VIETNAM', 'BARBERO', 'AJEDREZ', 'COMIDA RÁPIDA', 'HELADO', 'CARA', 'FISCAL', 'CARDENAL', 'TROMPETA', 'SOLTERONA', 'DEBER', 'LOS ANGELES', 'PUENTE LEVADIZO', 'OREJERAS', 'PEREGRINO', 'TOCAR', 'MOZART', 'DIADEMA', 'SODA', 'PATO DONALD', 'BUCEAR', 'AIRE', 'PARRILLA', 'LEOPARDO', 'FUERA DE LÍMITE', 'SONAJERO', 'ESCLAVO', 'EMPUJAR', 'REMO', 'SANTO', 'FANTASMA', 'DEBATE', 'SONROJARSE', 'LOBO DE MAR', 'PROPAGANDA', 'LUCES DE NEÓN', 'RAYOS X', 'POSTER', 'SEVILLANAS', 'BATMAN', 'CAFE', 'ATAÚD', 'INVENTOR', 'ESTÚPIDO', 'BALLENA', 'ESTÓMAGO', 'ALGODÓN AZÚCAR', 'VIERNES', 'MALABARISTA', 'BOLA NAFTALINA', 'PLEGAR', 'ALTO'];
-const time = 10;
+const time = Math.floor(Math.random() * (120 - 60) + 60);
+//const time = 20;
 
 let currentIndex = Math.floor(Math.random() * words.length);
+
 let currentTime = time;
 let interval = setInterval(() => {
     nextTime();
     displayClock();
+}, 1000);
+let intervalSound = setInterval(() => {
+    if (isIntervalRunning){
+        playSoundBasedOnTime();
+
+    }
 }, 1000);
 let isIntervalRunning = false;
 
@@ -34,9 +42,9 @@ function showAlert(message: string) {
     }
 }
 
-function displayClock(){
+function displayClock() {
     let seconds = document.getElementById("seconds");
-    if (seconds){
+    if (seconds) {
         seconds.innerText = currentTime.toString() + "s";
     }
 }
@@ -56,39 +64,49 @@ function playSoundBasedOnTime() {
     let beepSound = document.getElementById("beep-sound") as HTMLAudioElement;
     let beepSound2 = document.getElementById("beep-sound2") as HTMLAudioElement;
     let beepSound3 = document.getElementById("beep-sound3") as HTMLAudioElement;
-    let beepSound4 = document.getElementById("beep-sound") as HTMLAudioElement;
-    let beepSound5 = document.getElementById("beep-sound") as HTMLAudioElement;
-    let beepSound6 = document.getElementById("beep-sound") as HTMLAudioElement;
+    let body = document.getElementById("body") as HTMLAudioElement;
 
-    if (currentTime > 20) {
+    if (currentTime > 25) {
         if (currentTime % 5 === 0 && beepSound) {
             beepSound.play();
         }
-    } else if (currentTime > 10) {
+    } else if (currentTime > 20) {
         if (currentTime % 2 === 0 && beepSound) {
             beepSound.play();
         }
-    } else if (currentTime > 5) {
+    } else if (currentTime > 15) {
         if (currentTime % 1 === 0 && beepSound) {
             beepSound.play();
         }
-    } else if (currentTime == 0){
+    } else if (currentTime == 0) {
         if (beepSound3) {
             console.log("beepSound3");
             beepSound3.play();
+            /*clear interval*/
+            clearInterval(intervalSound);
         }
     } else {
+        clearInterval(intervalSound);
         if (beepSound && beepSound2) {
             beepSound.play();
             beepSound2.play();
-            setTimeout(() => beepSound2.play(), 143);
         }
+        if (body) {
+            body.classList.remove("bg-blue-500");
+            body.classList.add("bg-red-500");
+
+            setTimeout(() => {
+                body.classList.remove("bg-red-500");
+                body.classList.add("bg-blue-500");
+            }, 300);
+        }
+        intervalSound = setInterval(() => {
+            playSoundBasedOnTime();
+        }, 500);
     }
 }
 
 function nextTime() {
-    playSoundBasedOnTime();
-
     if (currentTime > 0) {
         return currentTime--;
     } else {
@@ -121,6 +139,7 @@ function resetClock() {
     currentTime = time;
     pause();
     displayClock();
+    removeAlert();
     return currentTime;
 }
 
@@ -146,6 +165,13 @@ function updateButtonStyles() {
             pauseButton.classList.remove("bg-black");
             pauseButton.classList.add("bg-gray-800");
         }
+    }
+}
+
+function removeAlert() {
+    let alertContainer = document.getElementById("alert-container");
+    if (alertContainer) {
+        alertContainer.classList.add("hidden");
     }
 }
 
