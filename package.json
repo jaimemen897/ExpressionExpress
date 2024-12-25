@@ -1,0 +1,17 @@
+{
+  "name": "ExpressionExpress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "jsdom": "^25.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  },
+  "private": true
+}
