@@ -1,6 +1,5 @@
 var words = ['PARCHIS', 'CLUEDO', 'LANGOSTA', 'DOMINICAL', 'ACERO', 'PERFUME', 'MINUTO', 'CANARIAS', 'PASTA ITALIANA', 'ESTACIÓN', 'VIETNAM', 'BARBERO', 'AJEDREZ', 'COMIDA RÁPIDA', 'HELADO', 'CARA', 'FISCAL', 'CARDENAL', 'TROMPETA', 'SOLTERONA', 'DEBER', 'LOS ANGELES', 'PUENTE LEVADIZO', 'OREJERAS', 'PEREGRINO', 'TOCAR', 'MOZART', 'DIADEMA', 'SODA', 'PATO DONALD', 'BUCEAR', 'AIRE', 'PARRILLA', 'LEOPARDO', 'FUERA DE LÍMITE', 'SONAJERO', 'ESCLAVO', 'EMPUJAR', 'REMO', 'SANTO', 'FANTASMA', 'DEBATE', 'SONROJARSE', 'LOBO DE MAR', 'PROPAGANDA', 'LUCES DE NEÓN', 'RAYOS X', 'POSTER', 'SEVILLANAS', 'BATMAN', 'CAFE', 'ATAÚD', 'INVENTOR', 'ESTÚPIDO', 'BALLENA', 'ESTÓMAGO', 'ALGODÓN AZÚCAR', 'VIERNES', 'MALABARISTA', 'BOLA NAFTALINA', 'PLEGAR', 'ALTO'];
-//const time = Math.floor(Math.random() * (120 - 60) + 60);
-var time = 20;
+var time = Math.floor(Math.random() * (120 - 60) + 60);
 var currentIndex = Math.floor(Math.random() * words.length);
 var currentTime = time;
 var interval = setInterval(function () {
@@ -55,12 +54,12 @@ function playSoundBasedOnTime() {
     var beepSound2 = document.getElementById("beep-sound2");
     var beepSound3 = document.getElementById("beep-sound3");
     var body = document.getElementById("body");
-    if (currentTime > 25) {
+    if (currentTime > 45) {
         if (currentTime % 5 === 0 && beepSound) {
             beepSound.play();
         }
     }
-    else if (currentTime > 20) {
+    else if (currentTime > 30) {
         if (currentTime % 2 === 0 && beepSound) {
             beepSound.play();
         }
@@ -85,11 +84,11 @@ function playSoundBasedOnTime() {
             beepSound2.play();
         }
         if (body) {
-            body.classList.remove("bg-blue-500");
+            body.classList.remove("bg-blue-300");
             body.classList.add("bg-red-500");
             setTimeout(function () {
                 body.classList.remove("bg-red-500");
-                body.classList.add("bg-blue-500");
+                body.classList.add("bg-blue-300");
             }, 300);
         }
         intervalSound = setInterval(function () {
@@ -110,6 +109,7 @@ function nextTime() {
 function pause() {
     if (interval !== null) {
         clearInterval(interval);
+        clearInterval(intervalSound);
         isIntervalRunning = false;
         updateButtonStyles();
     }
@@ -121,10 +121,16 @@ function resume() {
             displayClock();
         }, 1000);
         isIntervalRunning = true;
+        intervalSound = setInterval(function () {
+            if (isIntervalRunning) {
+                playSoundBasedOnTime();
+            }
+        }, 1000);
         updateButtonStyles();
     }
 }
 function resetClock() {
+    time = Math.floor(Math.random() * (120 - 60) + 60);
     currentTime = time;
     pause();
     displayClock();
@@ -136,22 +142,14 @@ function updateButtonStyles() {
     var pauseButton = document.getElementById("pause");
     if (isIntervalRunning) {
         if (startButton) {
-            startButton.classList.remove("bg-green-500");
-            startButton.classList.add("bg-gray-800");
-        }
-        if (pauseButton) {
-            pauseButton.classList.remove("bg-gray-800");
-            pauseButton.classList.add("bg-black");
+            startButton.classList.remove("bg-blue-500");
+            startButton.classList.add("bg-gray-600");
         }
     }
     else {
         if (startButton) {
             startButton.classList.remove("bg-black");
-            startButton.classList.add("bg-green-500");
-        }
-        if (pauseButton) {
-            pauseButton.classList.remove("bg-black");
-            pauseButton.classList.add("bg-gray-800");
+            startButton.classList.add("bg-blue-500");
         }
     }
 }
