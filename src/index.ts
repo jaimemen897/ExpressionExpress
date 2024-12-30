@@ -9,12 +9,14 @@ let interval = setInterval(() => {
     displayClock();
 }, 1000);
 let intervalSound = setInterval(() => {
-    if (isIntervalRunning){
+    if (isIntervalRunning) {
         playSoundBasedOnTime();
 
     }
 }, 1000);
 let isIntervalRunning = false;
+let isPaused = false;
+buttonAction();
 
 function displayWord() {
     let wordDisplay = document.getElementById("word-display");
@@ -63,26 +65,27 @@ function playSoundBasedOnTime() {
     let beepSound = document.getElementById("beep-sound") as HTMLAudioElement;
     let beepSound2 = document.getElementById("beep-sound2") as HTMLAudioElement;
     let beepSound3 = document.getElementById("beep-sound3") as HTMLAudioElement;
-    let body = document.getElementById("body") as HTMLAudioElement;
-
     if (currentTime > 45) {
         if (currentTime % 5 === 0 && beepSound) {
             beepSound.play();
+            setBackground();
         }
     } else if (currentTime > 30) {
         if (currentTime % 2 === 0 && beepSound) {
             beepSound.play();
+            setBackground();
         }
     } else if (currentTime > 15) {
         if (currentTime % 1 === 0 && beepSound) {
             beepSound.play();
+            setBackground();
         }
     } else if (currentTime == 0) {
         if (beepSound3) {
             console.log("beepSound3");
             beepSound3.play();
-            /*clear interval*/
             clearInterval(intervalSound);
+            setBackground();
         }
     } else {
         clearInterval(intervalSound);
@@ -90,18 +93,24 @@ function playSoundBasedOnTime() {
             beepSound.play();
             beepSound2.play();
         }
-        if (body) {
-            body.classList.remove("bg-blue-300");
-            body.classList.add("bg-red-500");
-
-            setTimeout(() => {
-                body.classList.remove("bg-red-500");
-                body.classList.add("bg-blue-300");
-            }, 300);
-        }
+        setBackground();
         intervalSound = setInterval(() => {
             playSoundBasedOnTime();
         }, 500);
+    }
+}
+
+function setBackground() {
+    let body = document.getElementById("body") as HTMLAudioElement;
+
+    if (body) {
+        body.classList.remove("bg-gray-800");
+        body.classList.add("bg-red-500");
+
+        setTimeout(() => {
+            body.classList.remove("bg-red-500");
+            body.classList.add("bg-gray-800");
+        }, 300);
     }
 }
 
@@ -120,6 +129,7 @@ function pause() {
         clearInterval(interval);
         clearInterval(intervalSound);
         isIntervalRunning = false;
+        isPaused = true;
         updateButtonStyles();
     }
 }
@@ -133,11 +143,20 @@ function resume() {
 
         isIntervalRunning = true;
         intervalSound = setInterval(() => {
-            if (isIntervalRunning){
+            if (isIntervalRunning) {
                 playSoundBasedOnTime();
             }
         }, 1000);
+        isPaused = false;
         updateButtonStyles();
+    }
+}
+
+function buttonAction(){
+    if (isPaused) {
+        resume();
+    } else {
+        pause();
     }
 }
 
@@ -151,21 +170,12 @@ function resetClock() {
 }
 
 function updateButtonStyles() {
-    const startButton = document.getElementById("start");
-    const pauseButton = document.getElementById("pause");
+    const buttonText = document.getElementById("button-word");
 
-    if (isIntervalRunning) {
-        if (startButton) {
-            startButton.classList.remove("bg-blue-500");
-            startButton.classList.add("bg-gray-600");
-        }
-
-    } else {
-        if (startButton) {
-            startButton.classList.remove("bg-black");
-            startButton.classList.add("bg-blue-500");
-        }
-
+    if (isPaused && buttonText) {
+        buttonText.innerText = "Iniciar";
+    } else if (buttonText) {
+        buttonText.innerText = "Pausar";
     }
 }
 
